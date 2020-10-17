@@ -13,4 +13,11 @@ struct Cli {
 // main function
 fn main() {
     let args = Cli::from_args();
+    let f = std::fs::File::open(&args.path)
+        .expect("Unable to open.");
+    let reader = std::io::BufReader::new(f);
+    
+    for line in reader.lines() {
+        println!("{}", line);
+    }
 }
