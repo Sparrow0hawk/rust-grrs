@@ -2,7 +2,7 @@
 name = "grrs"
 version = "0.1.0"
 authors = ["sparrow0hawk <alexjcoleman@gmail.com>"]
-edition = "20120"
+edition = "2020"
 description = "My first rust CLI, sort of like grep"
 license = "MIT"
 
