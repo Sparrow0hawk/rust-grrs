@@ -38,3 +38,15 @@ fn main() -> Result<()> {
     info!("Finishing up");
     Ok(())
 }
+
+pub fn answer() -> Result<i32> {
+    Ok(42)
+}
+// testing module
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn check_answer_validity() {
+        assert_eq!(super::answer().expect("An error has occured"), 42)
+    }
+}
