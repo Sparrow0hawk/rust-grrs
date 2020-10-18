@@ -2,7 +2,9 @@
 name = "grrs"
 version = "0.1.0"
 authors = ["sparrow0hawk <alexjcoleman@gmail.com>"]
-edition = "2018"
+edition = "20120"
+description = "My first rust CLI, sort of like grep"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
