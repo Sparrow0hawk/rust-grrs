@@ -1,8 +1,8 @@
 use structopt::StructOpt;
-use std::io::BufRead;
 use anyhow::{Context, Result};
 use log::{info};
 use clap_verbosity_flag;
+use grrs;
 
 // search for a pattern in a file and display the lines that contain it.
 #[derive(Debug, StructOpt)]
@@ -32,21 +32,22 @@ fn main() -> Result<()> {
     let reader = std::io::BufReader::new(f);
     
     info!("Printing lines in file");
-    for line in reader.lines() {
-        println!("{}", line.expect("An error has occured."));
-    }
+    grrs::find_matches(reader, &args.pattern, &mut std::io::stdout());
     info!("Finishing up");
     Ok(())
 }
 
-pub fn answer() -> Result<i32> {
-    Ok(42)
-}
 // testing module
 #[cfg(test)]
 mod tests {
+
     #[test]
-    fn check_answer_validity() {
-        assert_eq!(super::answer().expect("An error has occured"), 42)
+    fn find_a_match() {
+        let mut result = Vec::new();
+        let f = std::fs::File::open("test_data/test.txt")
+            .expect("The test file is not found.");
+        let reader = std::io::BufReader::new(f);
+        grrs::find_matches(reader, "foo", &mut result);
+        assert_eq!(&result, b"foo: 100\n");
     }
 }
