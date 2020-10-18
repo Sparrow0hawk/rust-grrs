@@ -1,4 +1,5 @@
 use structopt::StructOpt;
+use std::io::BufRead;
 
 // search for a pattern in a file and display the lines that contain it.
 #[derive(StructOpt)]
@@ -11,13 +12,13 @@ struct Cli {
 }
 
 // main function
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Cli::from_args();
-    let f = std::fs::File::open(&args.path)
-        .expect("Unable to open.");
+    let f = std::fs::File::open(&args.path)?;
     let reader = std::io::BufReader::new(f);
     
     for line in reader.lines() {
-        println!("{}", line);
+        println!("{}", line?);
     }
+    Ok(())
 }
