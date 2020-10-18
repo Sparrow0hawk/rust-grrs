@@ -1,5 +1,6 @@
 use structopt::StructOpt;
 use std::io::BufRead;
+use anyhow::{Context, Result};
 
 // search for a pattern in a file and display the lines that contain it.
 #[derive(StructOpt)]
@@ -15,10 +16,10 @@ struct Cli {
 struct CustomError(String);
 
 // main function
-fn main() -> Result<(), CustomError> {
+fn main() -> Result<()> {
     let args = Cli::from_args();
     let f = std::fs::File::open(&args.path)
-        .map_err(|err| CustomError(format!("Error reading `{}`: {}", &args.path.to_str().unwrap(), err)))?;
+        .with_context(|| format!("Could not read file `{}`", &args.path.to_str().unwrap()))?;
     let reader = std::io::BufReader::new(f);
     
     for line in reader.lines() {
