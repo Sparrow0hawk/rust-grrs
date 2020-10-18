@@ -11,14 +11,18 @@ struct Cli {
     path: std::path::PathBuf,
 }
 
+#[derive(Debug)]
+struct CustomError(String);
+
 // main function
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<(), CustomError> {
     let args = Cli::from_args();
-    let f = std::fs::File::open(&args.path)?;
+    let f = std::fs::File::open(&args.path)
+        .map_err(|err| CustomError(format!("Error reading `{}`: {}", &args.path.to_str().unwrap(), err)))?;
     let reader = std::io::BufReader::new(f);
     
     for line in reader.lines() {
-        println!("{}", line?);
+        println!("{}", line.expect("An error has occured."));
     }
     Ok(())
 }
